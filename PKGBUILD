@@ -19,8 +19,8 @@ install=zfs.install
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
         'https://github.com/andrewc12/openzfs/commit/68b1eba.patch')
 sha256sums=(SKIP)
-            'SKIP'
-            '2b6996a310893d63f79fa32f8be2bd54f0cbe2a17c993c32c461cd04d1e81ae8')
+
+
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
               'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
 
