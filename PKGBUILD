@@ -2,11 +2,11 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.1.8*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 23.01.03*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.1.7
-pkgrel=6181
+pkgrel=2301030216
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
@@ -18,9 +18,9 @@ provides=("zfs=${pkgver}")
 install=zfs.install
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
         'https://github.com/andrewc12/openzfs/commit/68b1eba.patch')
-sha256sums=('SKIP' 'SKIP' 'SKIP')
-
-
+sha256sums=('6462e63e185de6ff10c64ffa6ed773201a082f9dd13e603d7e8136fcb4aca71b'
+            'SKIP'
+            '2b6996a310893d63f79fa32f8be2bd54f0cbe2a17c993c32c461cd04d1e81ae8')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
               'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
 
@@ -32,7 +32,7 @@ prepare() {
 }
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.1.8*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
 
     cd "zfs-${pkgver}"
     ./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin --libdir=/usr/lib \
