@@ -5,7 +5,7 @@ _linuxprefix=linux-xanmod
 _extramodules=$(find /usr/lib/modules -type d -iname 6.1.11*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
-pkgver=2.1.7
+pkgver=2.1.9
 pkgrel=61111
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
@@ -18,7 +18,7 @@ provides=("zfs=${pkgver}")
 install=zfs.install
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
         'https://github.com/andrewc12/openzfs/commit/68b1eba.patch')
-sha256sums=('6462e63e185de6ff10c64ffa6ed773201a082f9dd13e603d7e8136fcb4aca71b'
+sha256sums=('6b172cdf2eb54e17fcd68f900fab33c1430c5c59848fa46fab83614922fe50f6'
             'SKIP'
             '2b6996a310893d63f79fa32f8be2bd54f0cbe2a17c993c32c461cd04d1e81ae8')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
