@@ -17,16 +17,19 @@ makedepends=("$_linuxprefix-headers")
 provides=("zfs=${pkgver}")
 install=zfs.install
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
-        'linux62.patch')
+        'https://github.com/openzfs/zfs/commit/59f187563937aa0d6c74a9854eb1cab6632866f9.patch')
 sha256sums=('6b172cdf2eb54e17fcd68f900fab33c1430c5c59848fa46fab83614922fe50f6'
             'SKIP'
-            '933589f3bd0b0b7aeccdae4a7ffd8a6d48baff7be0903b525e617b8f869eeaf3')
+            '659a214380e77b5eb4f629c02eeaaf7cb4b0f9ffe316d17bb19ae370b54bc912')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
               'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
 
 prepare() {
     cd "zfs-${pkgver}"
-    patch -p1 -i ../linux62.patch
+
+    # Backport fix for build issues on linux-6.2.8 kernel. (https://github.com/openzfs/zfs/issues/14658)
+    patch -p1 -i ../59f187563937aa0d6c74a9854eb1cab6632866f9.patch
+
     ./autogen.sh
     sed -i "s|\$(uname -r)|${_kernver}|g" configure
 }
