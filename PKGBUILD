@@ -1,12 +1,20 @@
 # Maintainer: Bernhard Landauer <bernhard@manjaro.org>
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
+#	*** None of the expected "capability" interfaces were detected.
+#	*** This may be because your kernel version is newer than what is
+#	*** supported, or you are using a patched custom kernel with
+#	*** incompatible modifications.
+#	***
+#	*** ZFS Version: zfs-2.1.11-1
+#	*** Compatible Kernels: 3.10 - 6.2
+
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.2.12*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.3.0*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.1.11
-pkgrel=62121
+pkgrel=6301
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
@@ -16,7 +24,7 @@ depends=("$_linuxprefix" "kmod" "zfs-utils=${pkgver}")
 makedepends=("$_linuxprefix-headers")
 provides=("zfs=${pkgver}")
 install=zfs.install
-source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc})
+source=("https://github.com/openzfs/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc})
 sha256sums=('a54fe4e854d0a207584f1799a80e165eae66bc30dc8e8c96a1f99ed9d4d8ceb2'
             'SKIP')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
@@ -30,7 +38,7 @@ prepare() {
 }
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.2.12*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver=$(find /usr/lib/modules -type d -iname 6.3.0*xanmod* | rev | cut -d "/" -f1 | rev)
 
     cd "zfs-${pkgver}"
     ./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin --libdir=/usr/lib \
