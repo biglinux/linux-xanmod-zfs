@@ -1,19 +1,11 @@
 # Maintainer: Bernhard Landauer <bernhard@manjaro.org>
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
-#	*** None of the expected "capability" interfaces were detected.
-#	*** This may be because your kernel version is newer than what is
-#	*** supported, or you are using a patched custom kernel with
-#	*** incompatible modifications.
-#	***
-#	*** ZFS Version: zfs-2.1.11-1
-#	*** Compatible Kernels: 3.10 - 6.2
-
 _linuxprefix=linux-xanmod
 _extramodules=$(find /usr/lib/modules -type d -iname 6.3.5*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
-pkgver=2.1.11
+pkgver=2.1.12
 pkgrel=63510
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
@@ -25,7 +17,7 @@ makedepends=("$_linuxprefix-headers")
 provides=("zfs=${pkgver}")
 install=zfs.install
 source=("https://github.com/openzfs/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc})
-sha256sums=('a54fe4e854d0a207584f1799a80e165eae66bc30dc8e8c96a1f99ed9d4d8ceb2'
+sha256sums=('64daa26aed3e12c931f6f4413d7527c4ebdb8da35416b356152b5f9fdd4c6e6d'
             'SKIP')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
               'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
