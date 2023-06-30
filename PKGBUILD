@@ -6,7 +6,7 @@ _extramodules=$(find /usr/lib/modules -type d -iname 6.4.0*xanmod* | rev | cut -
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.1.12
-pkgrel=64010
+pkgrel=64020
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
