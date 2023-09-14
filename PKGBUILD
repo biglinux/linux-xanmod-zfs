@@ -2,11 +2,11 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.4.15*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.5.3*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.1.12
-pkgrel=64151
+pkgrel=65310
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
@@ -30,7 +30,7 @@ prepare() {
 }
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.4.15*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver=$(find /usr/lib/modules -type d -iname 6.5.3*xanmod* | rev | cut -d "/" -f1 | rev)
 
     cd "zfs-${pkgver}"
     ./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin --libdir=/usr/lib \
@@ -42,7 +42,7 @@ build() {
 
 package(){
     cd "zfs-${pkgver}"
-    install -Dm644 module/*/*.ko -t "$pkgdir/usr/lib/modules/$_extramodules/"
+    install -Dm 644 module/*/*.ko -t "$pkgdir/usr/lib/modules/$_extramodules/"
 
     # compress each module individually
     find "$pkgdir" -name '*.ko' -exec xz -T1 {} +
