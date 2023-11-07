@@ -17,7 +17,7 @@ makedepends=("$_linuxprefix-headers")
 provides=("zfs=${pkgver}")
 install=zfs.install
 source=("https://github.com/openzfs/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc})
-sha256sums=(SKIP)
+sha256sums=('SKIP'
             'SKIP')
 validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
               'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
