@@ -2,48 +2,34 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.5.10*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.6.4*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
-pkgver=2.2.0
-pkgrel=65101
+pkgver=2.2.1
+pkgrel=66410
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
 license=('CDDL')
 groups=("$_linuxprefix-extramodules")
-depends=("$_linuxprefix" "kmod" "zfs-utils=${pkgver}")
-makedepends=("$_linuxprefix-headers")
-provides=("zfs=${pkgver}")
-install=zfs.install
-source=("https://github.com/openzfs/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc})
-sha256sums=('SKIP'
-            'SKIP')
-validpgpkeys=('4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
-              'C33DF142657ED1F7C328A2960AB9E991C6AF658B') # Brian Behlendorf <behlendorf1@llnl.gov>
-
-prepare() {
-    cd "zfs-${pkgver}"
-
-    ./autogen.sh
-    sed -i "s|\$(uname -r)|${_kernver}|g" configure
-}
+depends=("$_linuxprefix" "zfs-utils=${pkgver}")
+makedepends=("$_linuxprefix-headers" "zfs-dkms=${pkgver}")
+provides=("zfs=${pkgver}" "ZFS-MODULE=${pkgver}")
+options=('!strip')
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.5.10*xanmod* | rev | cut -d "/" -f1 | rev)
-
-    cd "zfs-${pkgver}"
-    ./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin --libdir=/usr/lib \
-                --datadir=/usr/share --includedir=/usr/include --with-udevdir=/lib/udev \
-                --libexecdir=/usr/lib/zfs-${pkgver} --with-config=kernel \
-                --with-linux=/usr/lib/modules/${_kernver}/build
-    make
+    _kernver=$(find /usr/lib/modules -type d -iname 6.6.4*xanmod* | rev | cut -d "/" -f1 | rev)
+    fakeroot dkms build --dkmstree "${srcdir}" -m zfs/${pkgver} -k ${_kernver}
 }
 
-package(){
-    cd "zfs-${pkgver}"
-    install -Dm 644 module/*/*.ko -t "$pkgdir/usr/lib/modules/$_extramodules/"
+package() {
+    _kernver=$(find /usr/lib/modules -type d -iname 6.6.4*xanmod* | rev | cut -d "/" -f1 | rev)
+    install -Dt "${pkgdir}/usr/lib/modules/${_extramodules}" -m644 zfs/${pkgver}/${_kernver}/${CARCH}/module/*
 
     # compress each module individually
     find "$pkgdir" -name '*.ko' -exec xz -T1 {} +
+
+    # systemd module loading
+    printf '%s\n' spl zfs |
+    install -Dm 644 /dev/stdin "${pkgdir}/usr/lib/modules-load.d/${pkgname}.conf"
 }
