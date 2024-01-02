@@ -2,11 +2,11 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.6.8*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.6.9*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.2.2
-pkgrel=66810
+pkgrel=66910
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
@@ -18,12 +18,12 @@ provides=("zfs=${pkgver}" "ZFS-MODULE=${pkgver}")
 options=('!strip')
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.6.8*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver=$(find /usr/lib/modules -type d -iname 6.6.9*xanmod* | rev | cut -d "/" -f1 | rev)
     fakeroot dkms build --dkmstree "${srcdir}" -m zfs/${pkgver} -k ${_kernver}
 }
 
 package() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.6.8*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver=$(find /usr/lib/modules -type d -iname 6.6.9*xanmod* | rev | cut -d "/" -f1 | rev)
     install -Dt "${pkgdir}/usr/lib/modules/${_extramodules}" -m644 zfs/${pkgver}/${_kernver}/${CARCH}/module/*
 
     # compress each module individually
