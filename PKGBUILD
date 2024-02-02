@@ -18,6 +18,7 @@ provides=("zfs=${pkgver}" "ZFS-MODULE=${pkgver}")
 options=('!strip')
 
 build() {
+  _kernver="$(cat /usr/src/${_linuxprefix}/version)"
     fakeroot dkms build --dkmstree "${srcdir}" -m zfs/${pkgver} -k ${_kernver}
 }
 
