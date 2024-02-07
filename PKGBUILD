@@ -6,7 +6,7 @@ _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
 pkgname="$_linuxprefix-zfs"
 pkgver=2.2.2
-pkgrel=66151
+pkgrel=66161
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
