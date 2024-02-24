@@ -2,27 +2,30 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 
 _linuxprefix=linux-xanmod
-_kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
-pkgname="$_linuxprefix-zfs"
+pkgname="${_linuxprefix}-zfs"
 pkgver=2.2.2
-pkgrel=67510
+pkgrel=67610
 pkgdesc='Kernel modules for the Zettabyte File System.'
 arch=('x86_64')
 url="http://zfsonlinux.org/"
-license=('CDDL')
-groups=("$_linuxprefix-extramodules")
-depends=("$_linuxprefix" "zfs-utils=${pkgver}")
-makedepends=("$_linuxprefix-headers" "zfs-dkms=${pkgver}")
+license=('CDDL-1.0')
+groups=("${_linuxprefix}-extramodules")
+depends=("${_linuxprefix}" "zfs-utils=${pkgver}")
+makedepends=("${_linuxprefix}-headers" "zfs-dkms=${pkgver}")
 provides=("zfs=${pkgver}" "ZFS-MODULE=${pkgver}")
 options=('!strip')
 
 build() {
   _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+
     fakeroot dkms build --dkmstree "${srcdir}" -m zfs/${pkgver} -k ${_kernver}
 }
 
 package() {
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+
     install -Dt "${pkgdir}/usr/lib/modules/${_kernver}/extramodules" -m644 zfs/${pkgver}/${_kernver}/${CARCH}/module/*
 
     # compress each module individually
